@@ -1,3 +1,8 @@
+
+$subnet = "100"
+$config = "vrpcfg.cfg"
+$exten = "zip"
+$currentloc = Get-Location
 $archdir = "huawei"
 
 if(!(Test-Path ".\$archdir")) {
@@ -10,12 +15,7 @@ if(!(Test-Path ".\$repodir")) {
     throw "$repodir not exist!"
 }
 
-$subnet = "100"
-$config = "vrpcfg.cfg"
-$exten = "zip"
-$currentloc = Get-Location
-
-function Commit-Config {
+function Invoke-CommitConfig {
     param(
         [Parameter(ValueFromPipeline)]
         [string]$archfile,
@@ -41,7 +41,7 @@ function Commit-Config {
   }
 }
 
-function Walk-Subdirs {
+function Get-Subdirs {
     param(
         [Parameter(ValueFromPipeline)]
         [string]$archsubdir      
@@ -49,7 +49,7 @@ function Walk-Subdirs {
   process{
     $archfiles = Get-ChildItem ".\$archdir\$archsubdir\" | ? name -like *.$exten | Sort-Object -Property LastWriteTime
     if($archfiles.Count -gt 0) {
-        $archfiles.Name | Commit-Config -archsubdir $archsubdir
+        $archfiles.Name | Invoke-CommitConfig -archsubdir $archsubdir
     }    
   }
 }
@@ -58,7 +58,7 @@ $archsubdirs = Get-ChildItem -Directory -Path $archdir | ? name -like $subnet*
 if($archsubdirs.Count -eq 0) {
     throw "$archsubdirs.Name is empty"
 }
-$archsubdirs.Name | Walk-Subdirs
+$archsubdirs.Name | Get-Subdirs
 
 Set-Location -Path "$repodir"
     git push
