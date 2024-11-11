@@ -1,8 +1,9 @@
+$archdir = "huawei"
+
 if(!(Test-Path ".\$archdir")) {
     throw "$archdir not exist!"
 }
 
-$archdir = "huawei"
 $repodir = "huaweibackup"
 $subnet = "100"
 $config = "vrpcfg.cfg"
