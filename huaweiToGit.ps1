@@ -6,8 +6,8 @@ if(!(Test-Path ".\$archdir")) {
 
 $repodir = "huaweibackup"
 
-if(!(Test-Path ".\$archdir")) {
-    throw "$archdir not exist!"
+if(!(Test-Path ".\$repodir")) {
+    throw "$repodir not exist!"
 }
 
 $subnet = "100"
