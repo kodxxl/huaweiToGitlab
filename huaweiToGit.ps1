@@ -5,6 +5,11 @@ if(!(Test-Path ".\$archdir")) {
 }
 
 $repodir = "huaweibackup"
+
+if(!(Test-Path ".\$archdir")) {
+    throw "$archdir not exist!"
+}
+
 $subnet = "100"
 $config = "vrpcfg.cfg"
 $exten = "zip"
@@ -31,7 +36,6 @@ function Commit-Config {
     Set-Location -Path ".\$repodir\"
         git add *
         git commit -am "$archsubdir - $archfile"
-        Write-Host
     Set-Location $currentloc
     Rename-Item -Path $zip -NewName "$archfile.pushed"
   }
