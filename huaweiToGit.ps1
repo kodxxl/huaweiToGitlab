@@ -15,23 +15,23 @@ if(!(Test-Path ".\$repodir")) {
 }
 
 function Invoke-CommitConfig {
-    param(
-        [Parameter(ValueFromPipeline)]
-        [string]$archfile,
+  param(
+    [Parameter(ValueFromPipeline)]
+    [string]$archfile,
 
-        [Parameter()]
-        [string]$archsubdir        
-    )
+    [Parameter()]
+    [string]$archsubdir        
+  )
   process{
     $zip = ".\$archdir\$archsubdir\$archfile"
-    $cfg = "$currentloc\$repodir\$archsubdir\$config"
-    $readme = "$currentloc\$repodir\$archsubdir\README.md"
-
     Expand-Archive -Path $zip -DestinationPath ".\$repodir\$archsubdir\" -Force
 
 # Add UTF header and delete ending NUL
+    $cfg = "$currentloc\$repodir\$archsubdir\$config"
     $ascii = [System.IO.File]::ReadAllBytes($cfg)
+
     $utf8 = [byte[]](0xEF, 0xBB, 0xBF) + $ascii[0..($ascii.Length - 3)]
+    $readme = "$currentloc\$repodir\$archsubdir\README.md"
     [System.IO.File]::WriteAllBytes($readme, $utf8)
 
     Set-Location -Path ".\$repodir\"
@@ -43,10 +43,10 @@ function Invoke-CommitConfig {
 }
 
 function Get-Subdirs {
-    param(
-        [Parameter(ValueFromPipeline)]
-        [string]$archsubdir      
-    )
+  param(
+    [Parameter(ValueFromPipeline)]
+    [string]$archsubdir      
+  )
   process{
     $archfiles = Get-ChildItem ".\$archdir\$archsubdir\" | Where-Object name -like *.$exten | Sort-Object -Property LastWriteTime
     if($archfiles.Count -gt 0) {
