@@ -34,6 +34,7 @@ function Invoke-CommitConfig {
     $readme = "$currentloc\$repodir\$archsubdir\README.md"
     [System.IO.File]::WriteAllBytes($readme, $utf8)
 
+# Push every file into repository
     Set-Location -Path ".\$repodir\"
         git add *
         git commit -am "$archsubdir - $archfile"
