@@ -1,15 +1,17 @@
+#--------------CONFIG
+$subnet = "130"
+$archdir = "HuaweiBackup"
+$repodir = "kchuaweibak"
 #--------------
-$subnet = "100"
+
 $config = "vrpcfg.cfg"
 $exten = "zip"
 $currentloc = Get-Location
 
-$archdir = "huawei"
 if(!(Test-Path ".\$archdir")) {
     throw "$archdir not exist!"
 }
 
-$repodir = "huaweibackup"
 if(!(Test-Path ".\$repodir")) {
     throw "$repodir not exist!"
 }
@@ -23,8 +25,12 @@ function Invoke-CommitConfig {
     [string]$archsubdir        
   )
   process{
+    if(Test-Path ".\$repodir\$archsubdir\vrpcfg.cfg") {
+      Remove-item ".\$repodir\$archsubdir\vrpcfg.cfg" -Force
+    }
     $zip = ".\$archdir\$archsubdir\$archfile"
     Expand-Archive -Path $zip -DestinationPath ".\$repodir\$archsubdir\" -Force
+    Get-ChildItem ".\$repodir\$archsubdir\" | Where-Object name -like *.cfg | Select-object -First 1 | Rename-Item -NewName $config -Force
 
 # Add UTF header and delete ending NUL
     $cfg = "$currentloc\$repodir\$archsubdir\$config"
