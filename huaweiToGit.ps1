@@ -1,7 +1,7 @@
 #--------------CONFIG
-$subnet = "130"
+$subnet = "100"
 $archdir = "HuaweiBackup"
-$repodir = "kchuaweibak"
+$repodir = "schuaweibak"
 #--------------
 
 $config = "vrpcfg.cfg"
