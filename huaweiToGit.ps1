@@ -1,13 +1,14 @@
 #--------------CONFIG
 $subnet = "100"
 $archdir = "HuaweiBackup"
-$repodir = "schuaweibak"
+$repodir = "huaweibak"
 #--------------
 
 $config = "vrpcfg.cfg"
 $exten = "zip"
 $currentloc = Get-Location
 
+#--------------INITIAL TESTs
 if(!(Test-Path ".\$archdir")) {
     throw "$archdir not exist!"
 }
@@ -15,6 +16,7 @@ if(!(Test-Path ".\$archdir")) {
 if(!(Test-Path ".\$repodir")) {
     throw "$repodir not exist!"
 }
+#--------------
 
 function Invoke-CommitConfig {
   param(
@@ -62,12 +64,15 @@ function Get-Subdirs {
   }
 }
 
+#--------------ENTRY POINT
+
 $archsubdirs = Get-ChildItem -Directory -Path $archdir | Where-Object name -like $subnet*
 if($archsubdirs.Count -eq 0) {
     throw "Could not find configuration archieve folders"
 }
-#Main loop
+#--------------MAIN LOOP
 $archsubdirs.Name | Get-Subdirs
+#--------------
 
 Set-Location -Path "$repodir"
     git push
